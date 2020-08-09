@@ -1,11 +1,16 @@
 <template>
   <view>
-    <span class="iconfont icon-shoucang1"></span>
+    <searchInput />
   </view>
 </template>
 
 <script>
-export default {};
+import searchInput from "@/components/searchInput";
+export default {
+  components: {
+    searchInput
+  }
+};
 </script>
 
 <style>

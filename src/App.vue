@@ -15,4 +15,12 @@ export default {
 <style>
 @import url("style/iconfont.wxss");
 /*每个页面公共css */
+view,
+navigator {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  color: #666;
+  font-size: 24rpx;
+}
 </style>
