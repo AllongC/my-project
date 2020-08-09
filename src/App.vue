@@ -16,7 +16,8 @@ export default {
 @import url("style/iconfont.wxss");
 /*每个页面公共css */
 view,
-navigator {
+navigator,
+image {
   padding: 0;
   margin: 0;
   box-sizing: border-box;

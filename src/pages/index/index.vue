@@ -19,6 +19,22 @@
       </navigator>
     </view>
     <!-- 3.0 导航 end -->
+
+    <!-- 4.0 楼层 start  -->
+    <view class="fool" v-for="(item,index) in foolList" :key="index">
+      <view class="title">
+        <image :src="item.floor_title.image_src" mode="widthFix" />
+      </view>
+      <view class="bottom">
+        <image
+          v-for="(item,index) in item.product_list"
+          :key="index"
+          :src="item.image_src"
+          :mode="index==0?'widthFix':'scaleToFill'"
+        />
+      </view>
+    </view>
+    <!-- 4.0 楼层 end -->
   </view>
 </template>
 
@@ -31,12 +47,14 @@ export default {
   data() {
     return {
       bananers: [],
-      navList: []
+      navList: [],
+      foolList: []
     };
   },
   onLoad() {
     this.getBananer();
     this.getNav();
+    this.getfool();
   },
   methods: {
     getBananer() {
@@ -56,6 +74,15 @@ export default {
         .then(res => {
           this.navList = res[1].data.message;
         });
+    },
+    getfool() {
+      uni
+        .request({
+          url: "https://api-hmugo-web.itheima.net/api/public/v1/home/floordata"
+        })
+        .then(res => {
+          this.foolList = res[1].data.message;
+        });
     }
   }
 };
@@ -72,6 +99,23 @@ swiper {
   navigator {
     flex: 1;
     padding: 30rpx;
+  }
+}
+.fool {
+  .title {
+    margin: 10rpx 0rpx;
+    image {
+      width: 750rpx;
+    }
+  }
+  .bottom {
+    overflow: hidden;
+    image {
+      float: left;
+      width: 33.33%;
+      height: 202rpx;
+      padding: 4rpx;
+    }
   }
 }
 </style>
