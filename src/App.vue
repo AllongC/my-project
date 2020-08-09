@@ -23,4 +23,7 @@ navigator {
   color: #666;
   font-size: 24rpx;
 }
+image {
+  width: 100%;
+}
 </style>
