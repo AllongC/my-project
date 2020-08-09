@@ -51,14 +51,18 @@ export default {
       foolList: []
     };
   },
-  onLoad() {
-    this.getBananer();
-    this.getNav();
-    this.getfool();
+  async onLoad() {
+    wx.showLoading({
+      title: "加载中",
+      mask: true
+    });
+    Promise.all([this.getBananer(), this.getNav(), this.getfool()]).then(() => {
+      wx.hideLoading();
+    });
   },
   methods: {
     getBananer() {
-      uni
+      return uni
         .request({
           url: "https://api-hmugo-web.itheima.net/api/public/v1/home/swiperdata"
         })
@@ -67,7 +71,7 @@ export default {
         });
     },
     getNav() {
-      uni
+      return uni
         .request({
           url: "https://api-hmugo-web.itheima.net/api/public/v1/home/catitems"
         })
@@ -76,7 +80,7 @@ export default {
         });
     },
     getfool() {
-      uni
+      return uni
         .request({
           url: "https://api-hmugo-web.itheima.net/api/public/v1/home/floordata"
         })
