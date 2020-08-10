@@ -61,7 +61,6 @@ export default {
         this.getProduct();
         }else{
         dataAll = local.dataAll;
-        console.log(Date.now()-local.time>1000*60);
         this.titleList = dataAll.map(item => item.cat_name);
         this.productList = dataAll[0].children;
       }

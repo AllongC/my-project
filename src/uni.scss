@@ -1,2 +1,10 @@
 //主要颜色
 $mainColor:#eb4450;
+//多行文本溢出
+@mixin hidden($num) {
+    overflow : hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: $num;
+    -webkit-box-orient: vertical;
+}
