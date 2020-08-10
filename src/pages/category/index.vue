@@ -16,17 +16,19 @@
       </view>
       <scroll-view  class="main-right" scroll-y :scroll-top="scrollTop">
         <view class="product" v-for="(item,index) in productList" :key="index">
-          <view class="product-title">
-            <text>/</text>
-            <text>{{item.cat_name}}</text>
-            <text>/</text>
-          </view>
-          <view class="product-all">
-            <view class="product-shop" v-for="(item,index) in item.children" :key="index">
-              <image :src="item.cat_icon" mode="widthFix"></image>
-              <view>{{item.cat_name}}</view>
+            <view class="product-title">
+              <text>/</text>
+              <text>{{item.cat_name}}</text>
+              <text>/</text>
             </view>
-          </view>
+            <view class="product-all">
+              <view class="product-shop" v-for="(item,index) in item.children" :key="index">
+                <navigator :url="'/pages/goods_list/index?id='+item.cat_id">         
+                  <image :src="item.cat_icon" mode="widthFix"></image>
+                  <view>{{item.cat_name}}</view>
+                </navigator>
+              </view>
+            </view>
         </view>
       </scroll-view >
     </view>
