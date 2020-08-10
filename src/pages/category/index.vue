@@ -51,7 +51,31 @@ export default {
     };
   },
   onLoad() {
-    uni
+    const local = wx.getStorageSync('local')||null;
+    if(local){
+      if(Date.now()-local.time>1000*60){
+        wx.removeStorageSync('local');
+        this.getProduct();
+        }else{
+        dataAll = local.dataAll;
+        console.log(123);
+        console.log(Date.now()-local.time>1000*60);
+        this.titleList = dataAll.map(item => item.cat_name);
+        this.productList = dataAll[0].children;
+      }
+    }else{
+      this.getProduct();
+    }
+  },
+  methods: {
+    //获取当前下标
+    chageCurrent(index) {
+      this.currentId = index;
+      this.productList = dataAll[index].children;
+    },
+    //获取列表信息
+    getProduct(){
+       uni
       .request({
         url: "https://api-hmugo-web.itheima.net/api/public/v1/categories"
       })
@@ -59,12 +83,8 @@ export default {
         dataAll = res[1].data.message;
         this.titleList = dataAll.map(item => item.cat_name);
         this.productList = dataAll[0].children;
+        wx.setStorageSync('local', {dataAll:dataAll,time:Date.now()});
       });
-  },
-  methods: {
-    chageCurrent(index) {
-      this.currentId = index;
-      this.productList = dataAll[index].children;
     }
   }
 };
