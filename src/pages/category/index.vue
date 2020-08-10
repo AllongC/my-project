@@ -14,7 +14,7 @@
           @click="chageCurrent(index)"
         >{{item}}</view>
       </view>
-      <view class="main-right">
+      <scroll-view  class="main-right" scroll-y :scroll-top="scrollTop">
         <view class="product" v-for="(item,index) in productList" :key="index">
           <view class="product-title">
             <text>/</text>
@@ -28,7 +28,7 @@
             </view>
           </view>
         </view>
-      </view>
+      </scroll-view >
     </view>
     <!-- 2.0 分类内容 end-->
   </view>
@@ -47,7 +47,8 @@ export default {
     return {
       titleList: [],
       productList: [],
-      currentId: 0
+      currentId: 0,
+      scrollTop:0
     };
   },
   onLoad() {
@@ -58,7 +59,6 @@ export default {
         this.getProduct();
         }else{
         dataAll = local.dataAll;
-        console.log(123);
         console.log(Date.now()-local.time>1000*60);
         this.titleList = dataAll.map(item => item.cat_name);
         this.productList = dataAll[0].children;
@@ -72,6 +72,7 @@ export default {
     chageCurrent(index) {
       this.currentId = index;
       this.productList = dataAll[index].children;
+      this.scrollTop = Math.random()/1000
     },
     //获取列表信息
     getProduct(){
