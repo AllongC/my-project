@@ -18,11 +18,17 @@
           <navigator v-for="item in goodList" :key="item.goods_id">
             <view class="goods">
               <view class="goods-image">
-                  <image :src="item.goods_small_logo||'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1278875451,2756440706&fm=26&gp=0.jpg'" mode="widthFix"></image>
+                <image
+                  :src="
+                    item.goods_small_logo ||
+                      'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1278875451,2756440706&fm=26&gp=0.jpg'
+                  "
+                  mode="widthFix"
+                ></image>
               </view>
               <view class="goods-info">
-                  <view class="goods-title">{{item.goods_name}}</view>
-                  <view class="goods-price">￥{{item.goods_price}}</view>
+                <view class="goods-title">{{ item.goods_name }}</view>
+                <view class="goods-price">￥{{ item.goods_price }}</view>
               </view>
             </view>
           </navigator>
@@ -48,6 +54,7 @@ export default {
       items: ["综合", "售量", "价格"],
       current: 0,
       goodList: [],
+      totalPage: 1,
       data: {
         query: "",
         cid: "",
@@ -58,22 +65,48 @@ export default {
   },
   onLoad(options) {
     const { id } = options;
-    this.data.cid = id;
-    uni
-      .request({
-        url: "https://api-hmugo-web.itheima.net/api/public/v1/goods/search",
-        data: this.data
-      })
-      .then(res => {
-        this.goodList = res[1].data.message.goods;
-        console.log(this.goodList);
+    this.data.cid = 5;
+    this.getGoods();
+  },
+  async onPullDownRefresh() {
+    wx.showLoading({
+      title: "拼命加载中"
+    });
+    this.data.pagenum = 1;
+    await this.getGoods(true);
+    wx.stopPullDownRefresh();
+    wx.hideLoading();
+  },
+  onReachBottom() {
+    this.data.pagenum += 1;
+    if (this.totalPage >= this.data.pagenum) {
+      this.getGoods();
+    } else {
+      wx.showToast({
+        title: "我也是有底线的",
+        icon: "none"
       });
+    }
   },
   methods: {
     onClickItem(e) {
       if (this.current !== e.currentIndex) {
         this.current = e.currentIndex;
       }
+    },
+    async getGoods(isClear = false) {
+      const res = await uni.request({
+        url: "https://api-hmugo-web.itheima.net/api/public/v1/goods/search",
+        data: this.data
+      });
+      const { goods, total } = res[1].data.message;
+      this.totalPage = Math.ceil(total / this.data.pagesize);
+      if (!isClear) {
+        this.goodList = [...this.goodList, ...goods];
+      } else {
+        this.goodList = goods;
+      }
+      return Promise.resolve();
     }
   }
 };
@@ -93,9 +126,9 @@ export default {
   padding: 30rpx;
   .goods-image {
     flex: 1;
-    image{
-        width: 184rpx;
-        height: 184rpx;
+    image {
+      width: 184rpx;
+      height: 184rpx;
     }
   }
   .goods-info {
@@ -104,11 +137,11 @@ export default {
     justify-content: space-around;
     height: 100%;
     flex: 2;
-    .goods-title{
-        @include hidden(2)
+    .goods-title {
+      @include hidden(2);
     }
-    .goods-price{
-        color: $mainColor;
+    .goods-price {
+      color: $mainColor;
     }
   }
 }
