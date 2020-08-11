@@ -15,7 +15,11 @@
       ></uni-segmented-control>
       <view class="content">
         <view v-if="current === 0">
-          <navigator v-for="item in goodList" :key="item.goods_id">
+          <navigator
+            v-for="item in goodList"
+            :key="item.goods_id"
+            :url="'/pages/goods_detail/index?id=' + item.goods_id"
+          >
             <view class="goods">
               <view class="goods-image">
                 <image
@@ -65,7 +69,7 @@ export default {
   },
   onLoad(options) {
     const { id } = options;
-    this.data.cid = 5;
+    this.data.cid = id;
     this.getGoods();
   },
   async onPullDownRefresh() {

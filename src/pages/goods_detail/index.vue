@@ -1,0 +1,174 @@
+<template>
+  <view class="detail" v-if="goodsList">
+    <!-- 1.0 轮播图 start -->
+    <swiper autoplay circular indicator-dots>
+      <swiper-item v-for="item in goodsList.pics" :key="item.pics_id">
+        <image :src="item.pics_mid"></image>
+      </swiper-item>
+    </swiper>
+    <!-- 1.0 轮播图 end -->
+
+    <!-- 2.0 收藏 start -->
+    <view class="detail-collect">
+      <view class="goods-price">￥{{ goodsList.goods_price }}</view>
+      <view class="goods-info">
+        <view class="goods-name">{{ goodsList.goods_name }}</view>
+        <view class="goods-icon">
+          <view class="iconfont icon-shoucang"></view>
+          <view>收藏</view>
+        </view>
+      </view>
+    </view>
+    <!-- 2.0 收藏 end -->
+
+    <!-- 3.0 图文详细 start -->
+    <view class="detail-content">
+      <view class="content-title">图文详细</view>
+      <view class="content">
+        <rich-text :nodes="goodsList.goods_introduce"></rich-text>
+      </view>
+    </view>
+    <!-- 3.0 图文详细 end -->
+
+    <!-- 4.0 底部固定 start -->
+    <view class="bottom">
+      <view class="bottom-contact bottom-icon">
+        <view class="iconfont .icon-kefu"></view>
+        <view class="bottom-font">联系客服</view>
+      </view>
+      <view class="bottom-share bottom-icon">
+        <view class="iconfont .icon-yixianshi-"></view>
+        <view class="bottom-font">分享</view>
+      </view>
+      <view class="bottom-contact bottom-icon">
+        <view class="iconfont .icon-gouwuche"></view>
+        <view class="bottom-font">购物车</view>
+      </view>
+      <view class="add-cart">加入购物车</view>
+      <view class="buy">立即购买</view>
+    </view>
+    <!-- 4.0 底部固定 end -->
+  </view>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      goodsList: null,
+      goods_id: null
+    };
+  },
+  onLoad(options) {
+    // this.goods_id = options.id;
+    this.goods_id = 43988;
+    this.getDetail();
+  },
+  methods: {
+    async getDetail() {
+      const url =
+        "https://api-hmugo-web.itheima.net/api/public/v1/goods/detail";
+      const res = await uni.request({
+        url,
+        data: {
+          goods_id: this.goods_id
+        }
+      });
+      this.goodsList = res[1].data.message;
+      console.log(this.goodsList);
+    }
+  }
+};
+</script>
+
+<style lang="scss" scoped>
+.detail {
+  padding-bottom: 100rpx;
+}
+swiper {
+  height: 580rpx;
+  overflow: hidden;
+  image {
+    height: 750rpx;
+  }
+}
+.detail-collect {
+  color: #666;
+  .goods-price {
+    color: $mainColor;
+    font-weight: 600;
+    font-size: 36rpx;
+    padding: 10rpx;
+  }
+  .goods-info {
+    display: flex;
+    height: 100rpx;
+    width: 750rpx;
+    padding: 10rpx;
+    border-bottom: 6rpx solid #e4e4e4;
+    .goods-name {
+      flex: 8;
+      border-right: 2rpx solid #999;
+      @include hidden(2);
+    }
+    .goods-icon {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      flex: 2;
+      text-align: center;
+      .icon-shoucang {
+        font-size: 30rpx;
+      }
+    }
+  }
+}
+.detail-content {
+  .content-title {
+    font-weight: 600;
+    font-size: 36rpx;
+    color: $mainColor;
+    padding: 10rpx;
+  }
+}
+.bottom {
+  display: flex;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  height: 100rpx;
+  text-align: center;
+  width: 750rpx;
+  background-color: white;
+  .iconfont {
+    font-size: 32rpx;
+  }
+  .bottom-icon {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1;
+  }
+  .bottom-font {
+    color: balck;
+    margin-top: 5rpx;
+    font-size: 22rpx;
+  }
+  .add-cart {
+    flex: 2;
+    color: white;
+    line-height: 100rpx;
+    font-weight: 600;
+    font-size: 26rpx;
+    background-color: #ffa500;
+  }
+  .buy {
+    flex: 2;
+    color: white;
+    line-height: 100rpx;
+    font-weight: 600;
+    font-size: 26rpx;
+    background-color: $mainColor;
+  }
+}
+</style>
