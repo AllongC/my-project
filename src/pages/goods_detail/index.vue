@@ -35,16 +35,18 @@
       <view class="bottom-contact bottom-icon">
         <view class="iconfont .icon-kefu"></view>
         <view class="bottom-font">联系客服</view>
+        <button open-type="contact"></button>
       </view>
       <view class="bottom-share bottom-icon">
         <view class="iconfont .icon-yixianshi-"></view>
         <view class="bottom-font">分享</view>
+        <button open-type="share"></button>
       </view>
       <view class="bottom-contact bottom-icon">
         <view class="iconfont .icon-gouwuche"></view>
         <view class="bottom-font">购物车</view>
       </view>
-      <view class="add-cart">加入购物车</view>
+      <view class="add-cart" @click="addCart">加入购物车</view>
       <view class="buy">立即购买</view>
     </view>
     <!-- 4.0 底部固定 end -->
@@ -68,6 +70,26 @@ export default {
       }
     });
     this.goodsList = res;
+  },
+  methods: {
+    addCart() {
+      const goodsList = uni.getStorageSync("goodsList") || [];
+      const index = goodsList.findIndex(
+        goods => goods.goods_id == this.goodsList.goods_id
+      );
+      if (index == -1) {
+        this.goodsList.count = 1;
+        goodsList.push(this.goodsList);
+      } else {
+        goodsList[index].count++;
+      }
+      uni.setStorageSync("goodsList", goodsList);
+      wx.showToast({
+        title: "加入成功",
+        icon: "success",
+        mask: true
+      });
+    }
   }
 };
 </script>
@@ -132,13 +154,22 @@ swiper {
   width: 750rpx;
   background-color: white;
   .iconfont {
-    font-size: 32rpx;
+    font-size: 40rpx;
   }
   .bottom-icon {
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
     flex: 1;
+    button {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      opacity: 0;
+    }
   }
   .bottom-font {
     color: balck;
