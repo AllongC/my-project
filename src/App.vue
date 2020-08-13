@@ -12,7 +12,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 @import url("style/iconfont.wxss");
 /*每个页面公共css */
 view,
@@ -22,7 +22,7 @@ image {
   margin: 0;
   box-sizing: border-box;
   color: #666;
-  font-size: 24rpx;
+  font-size: 30rpx;
 }
 image {
   width: 100%;

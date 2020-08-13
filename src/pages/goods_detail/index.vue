@@ -2,7 +2,11 @@
   <view class="detail" v-if="goodsList">
     <!-- 1.0 轮播图 start -->
     <swiper autoplay circular indicator-dots>
-      <swiper-item v-for="item in goodsList.pics" :key="item.pics_id">
+      <swiper-item
+        v-for="(item, index) in goodsList.pics"
+        :key="item.pics_id"
+        @click="showImage(index)"
+      >
         <image :src="item.pics_mid"></image>
       </swiper-item>
     </swiper>
@@ -42,10 +46,14 @@
         <view class="bottom-font">分享</view>
         <button open-type="share"></button>
       </view>
-      <view class="bottom-contact bottom-icon">
+      <navigator
+        class="bottom-contact bottom-icon"
+        url="/pages/cart/index"
+        open-type="switchTab"
+      >
         <view class="iconfont .icon-gouwuche"></view>
         <view class="bottom-font">购物车</view>
-      </view>
+      </navigator>
       <view class="add-cart" @click="addCart">加入购物车</view>
       <view class="buy">立即购买</view>
     </view>
@@ -72,6 +80,14 @@ export default {
     this.goodsList = res;
   },
   methods: {
+    showImage(index) {
+      const current = this.goodsList.pics[index].pics_big_url;
+      const urls = this.goodsList.pics.map(item => item.pics_big_url);
+      wx.previewImage({
+        current,
+        urls
+      });
+    },
     addCart() {
       const goodsList = uni.getStorageSync("goodsList") || [];
       const index = goodsList.findIndex(

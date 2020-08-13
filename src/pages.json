@@ -1,6 +1,12 @@
 {
 	"pages": [
 		{
+			"path": "pages/cart/index",
+			"style": {
+				"navigationBarTitleText": "购物车"
+			}
+		},
+		{
 			"path": "pages/goods_detail/index",
 			"style": {
 				"navigationBarTitleText": "商品详细"
@@ -23,12 +29,6 @@
 			"style": {
 				"navigationBarTitleText": "商品列表",
 				"enablePullDownRefresh": true
-			}
-		},
-		{
-			"path": "pages/cart/index",
-			"style": {
-				"navigationBarTitleText": "购物车"
 			}
 		},
 		{
