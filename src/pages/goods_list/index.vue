@@ -73,13 +73,9 @@ export default {
     this.getGoods();
   },
   async onPullDownRefresh() {
-    wx.showLoading({
-      title: "拼命加载中"
-    });
     this.data.pagenum = 1;
     await this.getGoods(true);
     wx.stopPullDownRefresh();
-    wx.hideLoading();
   },
   onReachBottom() {
     this.data.pagenum += 1;
@@ -99,11 +95,11 @@ export default {
       }
     },
     async getGoods(isClear = false) {
-      const res = await uni.request({
-        url: "https://api-hmugo-web.itheima.net/api/public/v1/goods/search",
+      const res = await this.request({
+        url: "/goods/search",
         data: this.data
       });
-      const { goods, total } = res[1].data.message;
+      const { goods, total } = res;
       this.totalPage = Math.ceil(total / this.data.pagesize);
       if (!isClear) {
         this.goodList = [...this.goodList, ...goods];

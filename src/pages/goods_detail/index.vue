@@ -59,24 +59,15 @@ export default {
       goods_id: null
     };
   },
-  onLoad(options) {
-    // this.goods_id = options.id;
-    this.goods_id = 43988;
-    this.getDetail();
-  },
-  methods: {
-    async getDetail() {
-      const url =
-        "https://api-hmugo-web.itheima.net/api/public/v1/goods/detail";
-      const res = await uni.request({
-        url,
-        data: {
-          goods_id: this.goods_id
-        }
-      });
-      this.goodsList = res[1].data.message;
-      console.log(this.goodsList);
-    }
+  async onLoad(options) {
+    this.goods_id = options.id || 43988;
+    const res = await this.request({
+      url: "/goods/detail",
+      data: {
+        goods_id: this.goods_id
+      }
+    });
+    this.goodsList = res;
   }
 };
 </script>

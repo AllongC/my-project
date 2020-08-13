@@ -8,29 +8,34 @@
     <view class="main">
       <view class="main-left">
         <view
-          v-for="(item,index) in titleList"
+          v-for="(item, index) in titleList"
           :key="index"
-          :class="['item',currentId==index?'active':'']"
+          :class="['item', currentId == index ? 'active' : '']"
           @click="chageCurrent(index)"
-        >{{item}}</view>
+          >{{ item }}</view
+        >
       </view>
-      <scroll-view  class="main-right" scroll-y :scroll-top="scrollTop">
-        <view class="product" v-for="(item,index) in productList" :key="index">
-            <view class="product-title">
-              <text>/</text>
-              <text>{{item.cat_name}}</text>
-              <text>/</text>
+      <scroll-view class="main-right" scroll-y :scroll-top="scrollTop">
+        <view class="product" v-for="(item, index) in productList" :key="index">
+          <view class="product-title">
+            <text>/</text>
+            <text>{{ item.cat_name }}</text>
+            <text>/</text>
+          </view>
+          <view class="product-all">
+            <view
+              class="product-shop"
+              v-for="(item, index) in item.children"
+              :key="index"
+            >
+              <navigator :url="'/pages/goods_list/index?id=' + item.cat_id">
+                <image :src="item.cat_icon" mode="widthFix"></image>
+                <view>{{ item.cat_name }}</view>
+              </navigator>
             </view>
-            <view class="product-all">
-              <view class="product-shop" v-for="(item,index) in item.children" :key="index">
-                <navigator :url="'/pages/goods_list/index?id='+item.cat_id">         
-                  <image :src="item.cat_icon" mode="widthFix"></image>
-                  <view>{{item.cat_name}}</view>
-                </navigator>
-              </view>
-            </view>
+          </view>
         </view>
-      </scroll-view >
+      </scroll-view>
     </view>
     <!-- 2.0 分类内容 end-->
   </view>
@@ -50,21 +55,21 @@ export default {
       titleList: [],
       productList: [],
       currentId: 0,
-      scrollTop:0
+      scrollTop: 0
     };
   },
   onLoad() {
-    const local = wx.getStorageSync('local')||null;
-    if(local){
-      if(Date.now()-local.time>1000*60){
-        wx.removeStorageSync('local');
+    const local = wx.getStorageSync("local") || null;
+    if (local) {
+      if (Date.now() - local.time > 1000 * 60) {
+        wx.removeStorageSync("local");
         this.getProduct();
-        }else{
+      } else {
         dataAll = local.dataAll;
         this.titleList = dataAll.map(item => item.cat_name);
         this.productList = dataAll[0].children;
       }
-    }else{
+    } else {
       this.getProduct();
     }
   },
@@ -73,19 +78,17 @@ export default {
     chageCurrent(index) {
       this.currentId = index;
       this.productList = dataAll[index].children;
-      this.scrollTop = Math.random()/1000
+      this.scrollTop = Math.random() / 1000;
     },
     //获取列表信息
-    getProduct(){
-       uni
-      .request({
-        url: "https://api-hmugo-web.itheima.net/api/public/v1/categories"
-      })
-      .then(res => {
-        dataAll = res[1].data.message;
+    getProduct() {
+      this.request({
+        url: "/categories"
+      }).then(res => {
+        dataAll = res;
         this.titleList = dataAll.map(item => item.cat_name);
         this.productList = dataAll[0].children;
-        wx.setStorageSync('local', {dataAll:dataAll,time:Date.now()});
+        wx.setStorageSync("local", { dataAll: dataAll, time: Date.now() });
       });
     }
   }
@@ -124,15 +127,15 @@ export default {
           margin: 0rpx 10rpx;
         }
       }
-      .product-all{
+      .product-all {
         display: flex;
         flex-wrap: wrap;
       }
-      .product-shop{
+      .product-shop {
         width: 33.33%;
         text-align: center;
         padding: 5rpx;
-        image{
+        image {
           width: 104rpx;
           height: 106rpx;
         }

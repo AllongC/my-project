@@ -21,16 +21,16 @@
     <!-- 3.0 导航 end -->
 
     <!-- 4.0 楼层 start  -->
-    <view class="fool" v-for="(item,index) in foolList" :key="index">
+    <view class="fool" v-for="(item, index) in foolList" :key="index">
       <view class="title">
         <image :src="item.floor_title.image_src" mode="widthFix" />
       </view>
       <view class="bottom">
         <image
-          v-for="(item,index) in item.product_list"
+          v-for="(item, index) in item.product_list"
           :key="index"
           :src="item.image_src"
-          :mode="index==0?'widthFix':'scaleToFill'"
+          :mode="index == 0 ? 'widthFix' : 'scaleToFill'"
         />
       </view>
     </view>
@@ -52,41 +52,29 @@ export default {
     };
   },
   async onLoad() {
-    wx.showLoading({
-      title: "加载中",
-      mask: true
-    });
-    Promise.all([this.getBananer(), this.getNav(), this.getfool()]).then(() => {
-      wx.hideLoading();
-    });
+    this.requestAll([this.getBananer(), this.getNav(), this.getfool()]);
   },
   methods: {
     getBananer() {
-      return uni
-        .request({
-          url: "https://api-hmugo-web.itheima.net/api/public/v1/home/swiperdata"
-        })
-        .then(res => {
-          this.bananers = res[1].data.message;
-        });
+      this.request({
+        url: "/home/swiperdata"
+      }).then(res => {
+        this.bananers = res;
+      });
     },
     getNav() {
-      return uni
-        .request({
-          url: "https://api-hmugo-web.itheima.net/api/public/v1/home/catitems"
-        })
-        .then(res => {
-          this.navList = res[1].data.message;
-        });
+      this.request({
+        url: "/home/catitems"
+      }).then(res => {
+        this.navList = res;
+      });
     },
     getfool() {
-      return uni
-        .request({
-          url: "https://api-hmugo-web.itheima.net/api/public/v1/home/floordata"
-        })
-        .then(res => {
-          this.foolList = res[1].data.message;
-        });
+      this.request({
+        url: "/home/floordata"
+      }).then(res => {
+        this.foolList = res;
+      });
     }
   }
 };

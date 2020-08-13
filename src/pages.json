@@ -1,15 +1,21 @@
 {
 	"pages": [
 		{
-			"path": "pages/goods_detail/index",
-			"style": {
-				"navigationBarTitleText": "商品详细"
-			}
-		},
-		{
 			"path": "pages/category/index",
 			"style": {
 				"navigationBarTitleText": "分类"
+			}
+		},
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "首页"
+			}
+		},
+		{
+			"path": "pages/goods_detail/index",
+			"style": {
+				"navigationBarTitleText": "商品详细"
 			}
 		},
 		{
@@ -17,12 +23,6 @@
 			"style": {
 				"navigationBarTitleText": "商品列表",
 				"enablePullDownRefresh": true
-			}
-		},
-		{
-			"path": "pages/index/index",
-			"style": {
-				"navigationBarTitleText": "首页"
 			}
 		},
 		{
