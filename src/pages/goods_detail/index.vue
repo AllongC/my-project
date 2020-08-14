@@ -95,6 +95,7 @@ export default {
       );
       if (index == -1) {
         this.goodsList.count = 1;
+        this.goodsList.checked = true;
         goodsList.push(this.goodsList);
       } else {
         goodsList[index].count++;
